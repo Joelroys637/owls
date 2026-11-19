@@ -281,3 +281,51 @@
     transform: none;
   }
 }
+
+/* =========================================================
+   OWL CONCIERGE CHATBOT POSITIONING
+   Rock-solid bottom-right on desktop + generous balanced space on mobile
+   ========================================================= */
+
+.chatbot-launcher-fixed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  left: auto;
+  top: auto;
+  z-index: 99999;
+}
+
+@media (min-width: 640px) {
+  .chatbot-launcher-fixed {
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+.chatbot-panel-fixed {
+  position: fixed;
+  bottom: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom, 16px));
+  left: 16px;
+  right: 16px;
+  top: auto;
+  width: auto;
+  max-width: 410px;
+  max-height: min(84vh, 680px);
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 99999;
+}
+
+@media (min-width: 640px) {
+  .chatbot-panel-fixed {
+    bottom: 24px;
+    right: 24px;
+    left: auto;
+    width: 400px;
+    max-width: 400px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

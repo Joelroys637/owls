@@ -133,9 +133,6 @@ export function TabletopBackground() {
       <div className="absolute top-[48%] right-6 text-[#111318]/15 font-mono text-xs select-none">
         + [AXIS-02]
       </div>
-      <div className="absolute top-[75%] left-6 text-[#111318]/15 font-mono text-xs select-none">
-        + [STAGE-03]
-      </div>
     </div>
   );
 }

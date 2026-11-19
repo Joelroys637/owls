@@ -377,15 +377,7 @@ export function OwlChatbot({
         <button
           type="button"
           onClick={() => onOpenChange(true)}
-          style={{
-            position: 'fixed',
-            bottom: '24px',
-            right: '24px',
-            left: 'auto',
-            top: 'auto',
-            zIndex: 99999,
-          }}
-          className="group flex h-14 w-14 items-center justify-center rounded-full bg-[#111318] hover:bg-[#C84B31] shadow-[0_12px_36px_rgba(0,0,0,0.38)] border border-white/20 transition-all hover:scale-105 hover:-translate-y-0.5 cursor-pointer p-1.5"
+          className="chatbot-launcher-fixed group flex h-14 w-14 items-center justify-center rounded-full bg-[#111318] hover:bg-[#C84B31] shadow-[0_12px_36px_rgba(0,0,0,0.38)] border border-white/20 transition-all hover:scale-105 hover:-translate-y-0.5 cursor-pointer p-1.5"
           aria-label="Open Owl Concierge Chatbot"
           title="Owl Game Concierge Chatbot"
         >
@@ -417,15 +409,7 @@ export function OwlChatbot({
       {/* Interactive Chatbot Panel */}
       {open && (
         <div
-          style={{
-            position: 'fixed',
-            bottom: '24px',
-            right: '24px',
-            left: 'auto',
-            top: 'auto',
-            zIndex: 99999,
-          }}
-          className="w-[calc(100vw-2rem)] sm:w-[400px] max-h-[82vh] flex flex-col rounded-3xl bg-white border border-[#E4E2DC] shadow-[0_28px_70px_-18px_rgba(17,19,24,0.34)] overflow-hidden"
+          className="chatbot-panel-fixed flex flex-col rounded-3xl bg-white border border-[#E4E2DC] shadow-[0_28px_70px_-18px_rgba(17,19,24,0.34)] overflow-hidden"
           role="dialog"
           aria-label="Owl Game Concierge Chatbot"
         >
@@ -649,7 +633,7 @@ export function OwlChatbot({
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder='Try "party game for 6" or "gift under 1500"...'
-              className="flex-1 h-10 px-3.5 rounded-full bg-[#FAFAF9] border border-[#E4E2DC] text-xs text-[#111318] placeholder:text-[#8D93A0] focus:outline-none focus:border-[#C84B31]"
+              className="flex-1 min-w-0 h-10 px-3.5 rounded-full bg-[#FAFAF9] border border-[#E4E2DC] text-xs text-[#111318] placeholder:text-[#8D93A0] focus:outline-none focus:border-[#C84B31]"
             />
             <button
               type="submit"
