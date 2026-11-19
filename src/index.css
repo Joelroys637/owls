@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --canvas: #FAFAF9;
+    --surface: #FFFFFF;
+    --stone: #F1F0EC;
+    --ink: #111318;
+    --ink-muted: #525866;
+    --accent: #C84B31;
+    --accent-hover: #A93B24;
+    --cobalt: #1E3A5F;
+    --brass: #B8862D;
+    --border-hairline: #E4E2DC;
+  }
+
+  html,
+  body {
+    scroll-behavior: smooth;
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    background-color: var(--canvas);
+    color: var(--ink);
+  }
+}
+
+.font-display {
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.font-mono-spec {
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   PREMIUM 3D TABLETOP ANIMATION SYSTEM
+   Hardware-accelerated, restrained, tactile & physical
+   ========================================================= */
+
+.perspective-stage {
+  perspective: 1400px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Physical 3D Board Game Box */
+.game-box-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+@keyframes gentle-levitate {
+  0%, 100% {
+    transform: translateY(0px) rotateY(-4deg) rotateX(1deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateY(5deg) rotateX(-1.5deg);
+  }
+}
+
+.animate-levitate {
+  animation: gentle-levitate 5.6s ease-in-out infinite;
+}
+
+@keyframes shadow-breathe {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    opacity: 0.34;
+  }
+  50% {
+    transform: scale(0.91) translateY(4px);
+    opacity: 0.22;
+  }
+}
+
+.animate-shadow-breathe {
+  animation: shadow-breathe 5.6s ease-in-out infinite;
+}
+
+/* Subtle glossy box-lid sheen */
+.box-sheen {
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(255, 255, 255, 0.08) 28%,
+    rgba(255, 255, 255, 0) 55%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+}
+
+/* True 3D Rolling Six-Sided Die */
+.die-scene {
+  width: 34px;
+  height: 34px;
+  perspective: 260px;
+}
+
+.die-cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.2, 0.9, 0.25, 1.05);
+}
+
+.die-face {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: #FFFFFF;
+  border: 1.5px solid #D8D4CA;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 5px;
+  gap: 2px;
+  backface-visibility: hidden;
+  box-shadow: inset 0 1px 2px rgba(17, 19, 24, 0.08);
+}
+
+.die-pip {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background-color: #111318;
+  place-self: center;
+}
+
+.die-pip-red {
+  background-color: #C84B31;
+}
+
+.die-face-1 { transform: rotateY(0deg) translateZ(17px); }
+.die-face-2 { transform: rotateY(90deg) translateZ(17px); }
+.die-face-3 { transform: rotateY(180deg) translateZ(17px); }
+.die-face-4 { transform: rotateY(-90deg) translateZ(17px); }
+.die-face-5 { transform: rotateX(90deg) translateZ(17px); }
+.die-face-6 { transform: rotateX(-90deg) translateZ(17px); }
+
+/* Floating subtle architectural grid background */
+.tabletop-grid {
+  background-image:
+    linear-gradient(to right, rgba(17, 19, 24, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 19, 24, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Smooth 3D Card Reveal */
+.reveal-3d {
+  opacity: 0;
+  transform: perspective(900px) translateY(22px) rotateX(4deg);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-3d.is-visible {
+  opacity: 1;
+  transform: perspective(900px) translateY(0) rotateX(0deg);
+}
+
+/* Hide scrollbars cleanly for horizontal pills */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-levitate,
+  .animate-shadow-breathe {
+    animation: none;
+  }
+  .reveal-3d {
+    opacity: 1;
+    transform: none;
+  }
+}
