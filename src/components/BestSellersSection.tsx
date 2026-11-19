@@ -23,7 +23,7 @@ export function BestSellersSection({
   const bestSellers = BOARD_GAMES.filter((g) => g.collection === 'bestseller');
 
   return (
-    <section id="best-sellers" className="py-16 lg:py-24 bg-white border-b border-[#E4E2DC]">
+    <section id="best-sellers" className="py-16 lg:py-24 bg-white/80 backdrop-blur-md border-b border-[#E4E2DC] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal3D>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">

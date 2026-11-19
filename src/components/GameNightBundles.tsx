@@ -23,7 +23,7 @@ export function GameNightBundles({ onAddBundle }: GameNightBundlesProps) {
   };
 
   return (
-    <section id="table-sets" className="py-16 lg:py-24 bg-white border-b border-[#E4E2DC]">
+    <section id="table-sets" className="py-16 lg:py-24 bg-white/80 backdrop-blur-md border-b border-[#E4E2DC] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal3D>
           <div className="max-w-2xl space-y-2 mb-10">

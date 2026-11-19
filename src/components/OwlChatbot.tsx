@@ -1,14 +1,17 @@
-import { useState, useRef, useEffect, type FormEvent } from 'react';
 import {
+  ArrowDownRight,
+  Bot,
+  Eye,
+  MessageCircle,
   MessageSquare,
-  X,
+  Plus,
+  RotateCcw,
   Send,
   Sparkles,
-  RotateCcw,
-  ArrowDownRight,
-  Plus,
-  Eye,
+  X,
 } from 'lucide-react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { BOARD_GAMES, BRAND_ASSETS, type BoardGame } from '../data/catalog';
 import { formatINR, formatPlayers, formatPlaytime } from '../utils/format';
 
@@ -91,6 +94,7 @@ export function OwlChatbot({
   onQuickView,
   onAddToCart,
 }: OwlChatbotProps) {
+  const [mounted, setMounted] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>(() => [buildWelcomeMessage()]);
   const [draftFilters, setDraftFilters] = useState<ConciergeFilters>({
     players: 'any',
@@ -102,6 +106,10 @@ export function OwlChatbot({
   const [dieTransform, setDieTransform] = useState('rotateX(-22deg) rotateY(28deg)');
   const [rollCount, setRollCount] = useState(0);
   const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -254,8 +262,8 @@ export function OwlChatbot({
           next.playtime === 'quick'
             ? 'Under 20m'
             : next.playtime === 'medium'
-            ? '20–60m'
-            : '60m+'
+              ? '20–60m'
+              : '60m+'
         );
       if (next.experience !== 'any') parts.push(next.experience);
       if (next.budget !== 'any')
@@ -263,8 +271,8 @@ export function OwlChatbot({
           next.budget === 'under1500'
             ? 'Under ₹1,500'
             : next.budget === 'mid'
-            ? '₹1.5K–₹4K'
-            : '₹4,000+'
+              ? '₹1.5K–₹4K'
+              : '₹4,000+'
         );
 
       const summaryLabel = parts.length > 0 ? parts.join(' · ') : 'All Tables';
@@ -352,43 +360,72 @@ export function OwlChatbot({
       keywordMatches.length > 0
         ? keywordMatches
         : hasParsedFilter
-        ? filterCatalog(parsed)
-        : BOARD_GAMES.filter((g) => g.collection === 'bestseller');
+          ? filterCatalog(parsed)
+          : BOARD_GAMES.filter((g) => g.collection === 'bestseller');
 
     setTimeout(() => {
       publishResults(parsed, `“${raw}”`, matches);
     }, 240);
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <>
-      {/* Floating Launcher Pill (Bottom Right) */}
+      {/* Floating Launcher Button (Always in Viewport Bottom-Right Corner) */}
       {!open && (
         <button
           type="button"
           onClick={() => onOpenChange(true)}
-          className="fixed bottom-5 right-5 z-40 group inline-flex items-center gap-3 pl-3 pr-5 py-2.5 rounded-full bg-[#111318] hover:bg-[#C84B31] text-white shadow-2xl shadow-black/25 border border-white/15 transition-all hover:-translate-y-0.5 cursor-pointer"
-          aria-label="Open Owl Concierge Game Finder Chatbot"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            left: 'auto',
+            top: 'auto',
+            zIndex: 99999,
+          }}
+          className="group flex h-14 w-14 items-center justify-center rounded-full bg-[#111318] hover:bg-[#C84B31] shadow-[0_12px_36px_rgba(0,0,0,0.38)] border border-white/20 transition-all hover:scale-105 hover:-translate-y-0.5 cursor-pointer p-1.5"
+          aria-label="Open Owl Concierge Chatbot"
+          title="Owl Game Concierge Chatbot"
         >
-          <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white border border-white/20 p-1 shrink-0 shadow-md">
+          {/* Circular Badge with Authentic Owls Image Logo */}
+          <span className="relative flex h-full w-full items-center justify-center rounded-full bg-white p-1.5 shadow-sm overflow-hidden">
             <img
               src={BRAND_ASSETS.owlMark}
               alt="Owl Game Concierge"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-110"
+              width="44"
+              height="44"
+              loading="eager"
             />
-            <span className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#4ADE80] ring-2 ring-[#111318]" />
           </span>
-          <div className="text-left">
-            <div className="text-xs font-bold leading-tight">Owl Game Concierge</div>
-            <div className="text-[10px] text-white/75">Find your game in 30s</div>
-          </div>
+
+          {/* Mini Chatbot Speech Bubble Badge */}
+          <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#C84B31] text-white shadow-md border-2 border-[#111318]">
+            <MessageSquare className="w-2.5 h-2.5" />
+          </span>
+
+          {/* Active Online Indicator with Pulse */}
+          <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ADE80] opacity-75" />
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#22C55E] ring-2 ring-[#111318]" />
+          </span>
         </button>
       )}
 
       {/* Interactive Chatbot Panel */}
       {open && (
         <div
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] max-h-[82vh] flex flex-col rounded-3xl bg-white border border-[#E4E2DC] shadow-[0_28px_70px_-18px_rgba(17,19,24,0.34)] overflow-hidden"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            left: 'auto',
+            top: 'auto',
+            zIndex: 99999,
+          }}
+          className="w-[calc(100vw-2rem)] sm:w-[400px] max-h-[82vh] flex flex-col rounded-3xl bg-white border border-[#E4E2DC] shadow-[0_28px_70px_-18px_rgba(17,19,24,0.34)] overflow-hidden"
           role="dialog"
           aria-label="Owl Game Concierge Chatbot"
         >
@@ -491,9 +528,8 @@ export function OwlChatbot({
               return (
                 <div
                   key={msg.id}
-                  className={`flex ${
-                    msg.sender === 'user' ? 'justify-end' : 'justify-start items-start gap-2.5'
-                  }`}
+                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start items-start gap-2.5'
+                    }`}
                 >
                   {msg.sender === 'bot' && (
                     <div className="w-7 h-7 rounded-full bg-white border border-[#E4E2DC] p-0.5 flex items-center justify-center shrink-0 mt-0.5 shadow-2xs overflow-hidden">
@@ -505,99 +541,97 @@ export function OwlChatbot({
                     </div>
                   )}
                   <div
-                    className={`flex flex-col ${
-                      msg.sender === 'user' ? 'items-end' : 'items-start'
-                    } gap-2 max-w-[88%]`}
+                    className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'
+                      } gap-2 max-w-[88%]`}
                   >
                     <div
-                      className={`px-4 py-2.5 rounded-2xl text-xs sm:text-[13px] leading-relaxed ${
-                        msg.sender === 'user'
-                          ? 'bg-[#111318] text-white rounded-br-md'
-                          : 'bg-white border border-[#E4E2DC] text-[#111318] rounded-bl-md shadow-2xs'
-                      }`}
+                      className={`px-4 py-2.5 rounded-2xl text-xs sm:text-[13px] leading-relaxed ${msg.sender === 'user'
+                        ? 'bg-[#111318] text-white rounded-br-md'
+                        : 'bg-white border border-[#E4E2DC] text-[#111318] rounded-bl-md shadow-2xs'
+                        }`}
                     >
                       {msg.text}
                     </div>
 
-                  {/* Guided Clickable Chips */}
-                  {msg.options && isLatest && (
-                    <div className="flex flex-wrap gap-1.5 max-w-[94%]">
-                      {msg.options.map((opt) => (
-                        <button
-                          key={opt.value}
-                          type="button"
-                          onClick={() => handleOptionSelect(msg.step, opt)}
-                          className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#C84B31] text-[#111318] hover:text-white border border-[#D8D4CA] hover:border-[#C84B31] text-xs font-semibold transition-all cursor-pointer shadow-2xs"
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Inline Compact Game Previews + Jump to Homepage Results */}
-                  {msg.matchedGames && msg.matchedGames.length > 0 && (
-                    <div className="w-full space-y-2 pt-1">
-                      {msg.matchedGames.map((g) => (
-                        <div
-                          key={g.id}
-                          className="flex items-center gap-3 p-2.5 rounded-2xl bg-white border border-[#E4E2DC]"
-                        >
-                          <img
-                            src={g.images[0]}
-                            alt={g.displayName}
-                            className="w-12 h-12 rounded-xl object-contain bg-[#F6F5F1] p-1 shrink-0"
-                          />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs font-bold text-[#111318] truncate">
-                              {g.displayName}
-                            </div>
-                            <div className="text-[11px] text-[#525866] font-mono-spec">
-                              {formatPlayers(g.minPlayers, g.maxPlayers)} ·{' '}
-                              {formatPlaytime(g.minPlaytime, g.maxPlaytime)} ·{' '}
-                              <strong className="text-[#C84B31]">{formatINR(g.price)}</strong>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-1 shrink-0">
-                            <button
-                              type="button"
-                              onClick={() => onQuickView(g)}
-                              className="w-7 h-7 rounded-full border border-[#E4E2DC] hover:border-[#111318] text-[#525866] hover:text-[#111318] flex items-center justify-center cursor-pointer"
-                              aria-label={`Inspect ${g.displayName}`}
-                            >
-                              <Eye className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => onAddToCart(g)}
-                              className="w-7 h-7 rounded-full bg-[#111318] hover:bg-[#C84B31] text-white flex items-center justify-center cursor-pointer"
-                              aria-label={`Add ${g.displayName} to bag`}
-                            >
-                              <Plus className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-
-                      <div className="flex items-center gap-2 pt-1">
-                        <button
-                          type="button"
-                          onClick={scrollToHomepageResults}
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-[#C84B31] hover:bg-[#A93B24] text-white text-xs font-semibold transition-colors cursor-pointer"
-                        >
-                          <span>View Results on Homepage</span>
-                          <ArrowDownRight className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={handleRestart}
-                          className="py-2.5 px-3 rounded-xl bg-white border border-[#E4E2DC] hover:border-[#111318] text-xs font-semibold text-[#111318] cursor-pointer"
-                        >
-                          Ask Again
-                        </button>
+                    {/* Guided Clickable Chips */}
+                    {msg.options && isLatest && (
+                      <div className="flex flex-wrap gap-1.5 max-w-[94%]">
+                        {msg.options.map((opt) => (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => handleOptionSelect(msg.step, opt)}
+                            className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#C84B31] text-[#111318] hover:text-white border border-[#D8D4CA] hover:border-[#C84B31] text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
                       </div>
-                    </div>
-                  )}
+                    )}
+
+                    {/* Inline Compact Game Previews + Jump to Homepage Results */}
+                    {msg.matchedGames && msg.matchedGames.length > 0 && (
+                      <div className="w-full space-y-2 pt-1">
+                        {msg.matchedGames.map((g) => (
+                          <div
+                            key={g.id}
+                            className="flex items-center gap-3 p-2.5 rounded-2xl bg-white border border-[#E4E2DC]"
+                          >
+                            <img
+                              src={g.images[0]}
+                              alt={g.displayName}
+                              className="w-12 h-12 rounded-xl object-contain bg-[#F6F5F1] p-1 shrink-0"
+                            />
+                            <div className="min-w-0 flex-1">
+                              <div className="text-xs font-bold text-[#111318] truncate">
+                                {g.displayName}
+                              </div>
+                              <div className="text-[11px] text-[#525866] font-mono-spec">
+                                {formatPlayers(g.minPlayers, g.maxPlayers)} ·{' '}
+                                {formatPlaytime(g.minPlaytime, g.maxPlaytime)} ·{' '}
+                                <strong className="text-[#C84B31]">{formatINR(g.price)}</strong>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => onQuickView(g)}
+                                className="w-7 h-7 rounded-full border border-[#E4E2DC] hover:border-[#111318] text-[#525866] hover:text-[#111318] flex items-center justify-center cursor-pointer"
+                                aria-label={`Inspect ${g.displayName}`}
+                              >
+                                <Eye className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => onAddToCart(g)}
+                                className="w-7 h-7 rounded-full bg-[#111318] hover:bg-[#C84B31] text-white flex items-center justify-center cursor-pointer"
+                                aria-label={`Add ${g.displayName} to bag`}
+                              >
+                                <Plus className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+
+                        <div className="flex items-center gap-2 pt-1">
+                          <button
+                            type="button"
+                            onClick={scrollToHomepageResults}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-[#C84B31] hover:bg-[#A93B24] text-white text-xs font-semibold transition-colors cursor-pointer"
+                          >
+                            <span>View Results on Homepage</span>
+                            <ArrowDownRight className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleRestart}
+                            className="py-2.5 px-3 rounded-xl bg-white border border-[#E4E2DC] hover:border-[#111318] text-xs font-semibold text-[#111318] cursor-pointer"
+                          >
+                            Ask Again
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -627,6 +661,7 @@ export function OwlChatbot({
           </form>
         </div>
       )}
-    </>
+    </>,
+    document.body
   );
 }

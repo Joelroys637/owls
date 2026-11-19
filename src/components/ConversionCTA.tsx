@@ -14,7 +14,7 @@ export function ConversionCTA() {
   };
 
   return (
-    <section id="newsletter-cta" className="py-16 lg:py-24 bg-[#F1F0EC] border-b border-[#E4E2DC]">
+    <section id="newsletter-cta" className="py-16 lg:py-24 bg-[#F1F0EC]/85 backdrop-blur-md border-b border-[#E4E2DC] relative">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal3D>
           <div className="relative rounded-[2rem] bg-white border border-[#E4E2DC] p-7 sm:p-12 shadow-[0_24px_60px_-30px_rgba(17,19,24,0.12)] overflow-hidden">

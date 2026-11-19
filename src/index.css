@@ -150,18 +150,112 @@
   background-size: 48px 48px;
 }
 
-/* Smooth 3D Card Reveal */
+/* Ambient tabletop lighting glow */
+@keyframes ambient-glow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(25px, -20px) scale(1.08);
+    opacity: 0.9;
+  }
+}
+
+.animate-ambient-glow {
+  animation: ambient-glow 16s ease-in-out infinite alternate;
+}
+
+/* Subtle board game dot matrix grid */
+.bg-tabletop-dots {
+  background-image: radial-gradient(rgba(17, 19, 24, 0.07) 1.2px, transparent 1.2px);
+  background-size: 32px 32px;
+}
+
+/* Smooth 3D Card Reveal with Scroll Direction Support */
 .reveal-3d {
   opacity: 0;
-  transform: perspective(900px) translateY(22px) rotateX(4deg);
+  transform: perspective(900px) translateY(24px) rotateX(4deg);
   transition:
     opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-3d[data-direction='down'] {
+  transform: perspective(900px) translateY(-24px) rotateX(-4deg);
+}
+
+.reveal-3d[data-direction='left'] {
+  transform: perspective(900px) translateX(-24px) rotateY(-3deg);
+}
+
+.reveal-3d[data-direction='right'] {
+  transform: perspective(900px) translateX(24px) rotateY(3deg);
+}
+
+.reveal-3d[data-direction='scale'] {
+  transform: perspective(900px) scale(0.94);
 }
 
 .reveal-3d.is-visible {
   opacity: 1;
-  transform: perspective(900px) translateY(0) rotateX(0deg);
+  transform: perspective(900px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(1);
+}
+
+/* =========================================================
+   SCROLLING & MARQUEE ANIMATIONS
+   Hardware-accelerated continuous transform
+   ========================================================= */
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee-scroll-reverse {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-marquee-infinite {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-infinite-fast {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 18s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll-reverse 30s linear infinite;
+  will-change: transform;
+}
+
+.pause-on-hover:hover .animate-marquee-infinite,
+.pause-on-hover:hover .animate-marquee-infinite-fast,
+.pause-on-hover:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/* Offset in-page anchors under the fixed header */
+[id] {
+  scroll-margin-top: 110px;
 }
 
 /* Hide scrollbars cleanly for horizontal pills */
@@ -175,7 +269,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-levitate,
-  .animate-shadow-breathe {
+  .animate-shadow-breathe,
+  .animate-marquee-infinite,
+  .animate-marquee-infinite-fast,
+  .animate-marquee-reverse,
+  .animate-ambient-glow {
     animation: none;
   }
   .reveal-3d {

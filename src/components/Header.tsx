@@ -48,7 +48,28 @@ export function Header({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const top = window.scrollY;
+          const total = document.documentElement.scrollHeight - window.innerHeight;
+          setScrollProgress(total > 0 ? Math.min(1, Math.max(0, top / total)) : 0);
+          setIsScrolled(top > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (searchOpen) {
@@ -107,7 +128,11 @@ export function Header({
       </div>
 
       {/* Full-Width Single-Line Main Navigation Bar */}
-      <div className="w-full bg-[#FAFAF9]/95 backdrop-blur-md border-b border-[#E4E2DC]">
+      <div
+        className={`w-full bg-[#FAFAF9]/95 backdrop-blur-md border-b border-[#E4E2DC] relative transition-shadow duration-300 ${
+          isScrolled ? 'shadow-[0_8px_30px_rgba(17,19,24,0.08)]' : ''
+        }`}
+      >
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 h-16 lg:h-[70px] flex items-center justify-between gap-4">
           {/* Mobile Menu Trigger + Original Logo */}
           <div className="flex items-center gap-3 shrink-0">
@@ -221,6 +246,17 @@ export function Header({
               </span>
             </button>
           </div>
+        </div>
+
+        {/* Hardware-Accelerated Smooth Scroll Reading Progress Line */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-transparent overflow-hidden pointer-events-none">
+          <div
+            className="h-full bg-gradient-to-r from-[#C84B31] via-[#E5987F] to-[#C84B31] origin-left shadow-[0_0_8px_rgba(200,75,49,0.6)]"
+            style={{
+              transform: `scaleX(${scrollProgress})`,
+              transition: 'transform 80ms cubic-bezier(0.1, 0.9, 0.2, 1)',
+            }}
+          />
         </div>
       </div>
 

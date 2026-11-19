@@ -51,7 +51,7 @@ export function EditorsSpotlight({
   };
 
   return (
-    <section className="py-16 lg:py-24 bg-[#F1F0EC] border-b border-[#E4E2DC]">
+    <section className="py-16 lg:py-24 bg-[#F1F0EC]/80 backdrop-blur-md border-b border-[#E4E2DC] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal3D>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-10">

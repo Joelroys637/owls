@@ -16,6 +16,8 @@ import { Footer } from './components/Footer';
 import { QuickViewModal } from './components/QuickViewModal';
 import { CartDrawer, type CartItem } from './components/CartDrawer';
 import { OwlChatbot } from './components/OwlChatbot';
+import { ScrollingMarquee } from './components/ScrollingMarquee';
+import { TabletopBackground } from './components/TabletopBackground';
 
 const INITIAL_COMPARE_SLUGS = ['wingspan-en', 'terraforming-mars-en', 'creature-comforts'];
 
@@ -157,7 +159,10 @@ export default function App() {
   const cartSubtotal = cart.reduce((sum, i) => sum + i.game.price * i.quantity, 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-[#111318]">
+    <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-[#111318] relative">
+      {/* Innovative Thematic Tabletop Atelier Background System */}
+      <TabletopBackground />
+
       <Header
         cartCount={cartCount}
         cartSubtotal={cartSubtotal}
@@ -168,7 +173,10 @@ export default function App() {
         onSelectGame={(game) => setQuickViewGame(game)}
       />
 
-      <main className="flex-1 pt-[100px] lg:pt-[106px]">
+      <main className="flex-1 pt-[100px] lg:pt-[106px] relative z-10">
+        {/* Dynamic Continuous Scrolling Announcement Ribbon — Positioned at the Top of the Video Hero Section */}
+        <ScrollingMarquee variant="dark" />
+
         {/* 1. Full-Bleed Cinematic 3D Video Hero */}
         <Hero3DStage onOpenChat={() => setChatOpen(true)} />
 

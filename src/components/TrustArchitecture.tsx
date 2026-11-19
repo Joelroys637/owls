@@ -30,7 +30,7 @@ const PILLARS = [
 
 export function TrustArchitecture() {
   return (
-    <section className="bg-white border-b border-[#E4E2DC]">
+    <section className="bg-white/85 backdrop-blur-md border-b border-[#E4E2DC] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {PILLARS.map((pillar, idx) => {

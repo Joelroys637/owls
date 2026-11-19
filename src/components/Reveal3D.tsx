@@ -4,9 +4,15 @@ interface Reveal3DProps {
   children: ReactNode;
   className?: string;
   delayMs?: number;
+  direction?: 'up' | 'down' | 'left' | 'right' | 'scale';
 }
 
-export function Reveal3D({ children, className = '', delayMs = 0 }: Reveal3DProps) {
+export function Reveal3D({
+  children,
+  className = '',
+  delayMs = 0,
+  direction = 'up',
+}: Reveal3DProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -31,6 +37,7 @@ export function Reveal3D({ children, className = '', delayMs = 0 }: Reveal3DProp
   return (
     <div
       ref={ref}
+      data-direction={direction}
       style={{ transitionDelay: `${delayMs}ms` }}
       className={`reveal-3d ${visible ? 'is-visible' : ''} ${className}`}
     >

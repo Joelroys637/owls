@@ -1,3 +1,5 @@
+import { OWL_LOGO_DATA_URI } from '../asset/owlLogoDataUri';
+
 export interface BoardGame {
   id: string;
   slug: string;
@@ -28,8 +30,8 @@ export const BRAND_ASSETS = {
   logoWordmark: 'https://www.owlsonboard.com/images/logo-mobile.webp',
   logoFullSvg: 'https://www.owlsonboard.com/images/Logo5.svg',
   favicon: '/favicon.ico',
-  owlMark: '/owl-logo.png',
-  owlAvatar: '/owl-avatar.png',
+  owlMark: OWL_LOGO_DATA_URI,
+  owlAvatar: OWL_LOGO_DATA_URI,
   heroBanner: 'https://www.owlsonboard.com/images/1.png',
   storyPhoto: 'https://www.owlsonboard.com/images/spotlight-narrative.jpeg',
   categories: {

@@ -54,7 +54,7 @@ export function CompareSection({
   };
 
   return (
-    <section id="compare" className="py-16 lg:py-24 bg-[#FAFAF9] border-b border-[#E4E2DC]">
+    <section id="compare" className="py-16 lg:py-24 bg-[#FAFAF9]/80 backdrop-blur-md border-b border-[#E4E2DC] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal3D>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-9">
