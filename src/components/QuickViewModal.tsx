@@ -70,7 +70,7 @@ export function QuickViewModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white border border-[#E4E2DC] shadow-2xl"
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto no-scrollbar rounded-3xl bg-white border border-[#E4E2DC] shadow-2xl"
       >
         <button
           type="button"
@@ -182,7 +182,7 @@ export function QuickViewModal({
               </div>
 
               {/* Authentic Product Description */}
-              <div className="text-xs sm:text-sm text-[#3B404C] leading-relaxed max-h-40 overflow-y-auto pr-1 whitespace-pre-line">
+              <div className="text-xs sm:text-sm text-[#3B404C] leading-relaxed whitespace-pre-line">
                 {game.description}
               </div>
             </div>
